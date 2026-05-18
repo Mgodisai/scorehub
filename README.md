@@ -8,7 +8,7 @@ A Spring Boot based sheet music library and practice application for managing sh
 - **PostgreSQL 16** (via Docker)
 - **Flyway** for database migrations
 - **MapStruct** for DTO mapping
-- **Gradle** build system
+- **Maven** build system
 - **GitHub Actions** CI/CD
 
 ## Features (planned)
@@ -27,23 +27,23 @@ A Spring Boot based sheet music library and practice application for managing sh
 
 - Java 21+
 - Docker & Docker Compose
-- Gradle 8.x
+- Maven 3.9+
 
 ### Run locally
 
-`ash
+```bash
 # Start PostgreSQL
 docker compose up -d
 
 # Run the application
-./gradlew bootRun
-`
+./mvnw spring-boot:run
+```
 
 The API will be available at http://localhost:8080/api/v1/
 
 ## Project Structure
 
-`
+```
 src/
 ├── main/java/com/scorehub/
 │   ├── config/          # Configuration classes
@@ -55,17 +55,18 @@ src/
 │   ├── repository/      # Spring Data repositories
 │   └── service/         # Business logic
 └── test/
-`
+```
 
 ## Documentation
 
 - [Project Plan](docs/PROJECT_PLAN.md) — Full architecture and development plan
+- [Contributing](CONTRIBUTING.md) — Branch strategy, commit conventions, versioning
 
 ## Development
 
-- Feature branches: eature/<issue-number>-short-description
-- PRs reference issues: Closes #<number>
-- Commit convention: 	ype: description (feat, fix, docs, refactor, test, chore)
+- Feature branches: `feature/<issue-number>-short-description`
+- PRs reference issues: `Closes #<number>`
+- Commit convention: `type: description` (feat, fix, docs, refactor, test, chore)
 
 ## License
 
