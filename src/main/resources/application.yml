@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: scorehub
+
+  # Default profile: dev (overridden in CI/prod)
+  profiles:
+    active: dev
+
+  # JPA settings (common across profiles)
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+
+  # Flyway database migration
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+# Actuator endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: when-authorized
+
+# Server config
+server:
+  port: 8080

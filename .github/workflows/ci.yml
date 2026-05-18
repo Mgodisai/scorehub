@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: scorehub_test
+          POSTGRES_USER: scorehub
+          POSTGRES_PASSWORD: scorehub_ci
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U scorehub"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Build and test
+        env:
+          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/scorehub_test
+          SPRING_DATASOURCE_USERNAME: scorehub
+          SPRING_DATASOURCE_PASSWORD: scorehub_ci
+          SPRING_PROFILES_ACTIVE: ci
+        run: ./mvnw verify --no-transfer-progress
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: target/surefire-reports/
